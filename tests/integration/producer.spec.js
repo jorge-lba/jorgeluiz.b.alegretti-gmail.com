@@ -63,8 +63,6 @@ describe( 'PRODUCER_UPDATE', () => {
             .send( producer )
         
         const keyResponse = Object.keys( response.body )[0]
-
-        console.log( response.body)
     
         expect( keyResponse ).toBe( 'message' )
         expect( response.body[ keyResponse ] ).toBe( `O cadastro do produtor Jorge foi atualizado para João` )
@@ -85,5 +83,19 @@ describe( 'PRODUCERS', () => {
             } )
 
         } 
+    } )
+} )
+
+
+describe( 'PRODUCER_DELETE', () => {
+    it( 'O produtor deve ser deletado', async () =>{
+            
+        const response = await request( app )
+            .delete( `/producers/${1}` )
+        
+        const keyResponse = Object.keys( response.body )[0]
+
+        expect( keyResponse ).toBe( 'message' )
+        expect( response.body[ keyResponse ] ).toBe( `O produtor foi deletado` )
     } )
 } )
