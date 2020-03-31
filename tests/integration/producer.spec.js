@@ -53,6 +53,18 @@ describe( 'PRODUCER_CREATE', () => {
     } )
 } )
 
+describe( 'PRODUCER_UPDATE', () => {
+    it( 'O produtor deve ser deletado', async () =>{
+        const response = await request( app )
+            .put( `/produces/${1}` )
+        
+        const keyResponse = Object.keys( response.body )[0]
+    
+        expect( keyResponse ).toBe( 'message' )
+        expect( response.body[ keyResponse ] ).toBe( 'O produtor foi deletado' )
+    } )
+} )
+
 describe( 'PRODUCERS', () => {
     it( 'Deve retornar os produtores cadastrados', async () => {
         const response = await request( app )
