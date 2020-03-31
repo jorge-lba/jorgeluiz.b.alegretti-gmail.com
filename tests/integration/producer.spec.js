@@ -45,8 +45,10 @@ describe( 'PRODUCER_CREATE', () => {
         const response = await request( app )
             .post( '/producers' )
             .send( dataTest.producer )
+        
+        const keysResponse = Object.keys(response.body)[0]
 
-        expect( Object.keys(response.body) ).toBe( 'ObjectID' )
+        expect( keysResponse ).toBe( 'ObjectId' )
         expect( typeof response.body ).toBe( 'object' )
     } )
 } )
