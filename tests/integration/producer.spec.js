@@ -55,13 +55,17 @@ describe( 'PRODUCER_CREATE', () => {
 
 describe( 'PRODUCER_UPDATE', () => {
     it( 'O produtor deve ser deletado', async () =>{
+        const producer = Object.assign( {}, dataTest.producer)
+        producer.name = 'João'
+            
         const response = await request( app )
             .put( `/produces/${1}` )
+            .send( producer )
         
         const keyResponse = Object.keys( response.body )[0]
     
         expect( keyResponse ).toBe( 'message' )
-        expect( response.body[ keyResponse ] ).toBe( 'O cadastro do produtor foi atualizado' )
+        expect( response.body[ keyResponse ] ).toBe( `O cadastro do produtor Jorge foi atualizado para João` )
     } )
 } )
 
