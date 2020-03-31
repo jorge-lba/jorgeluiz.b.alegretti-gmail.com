@@ -61,7 +61,7 @@ describe( 'PRODUCER_UPDATE', () => {
         const keyResponse = Object.keys( response.body )[0]
     
         expect( keyResponse ).toBe( 'message' )
-        expect( response.body[ keyResponse ] ).toBe( 'O produtor foi deletado' )
+        expect( response.body[ keyResponse ] ).toBe( 'O cadastro do produtor foi atualizado' )
     } )
 } )
 
