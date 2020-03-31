@@ -1,4 +1,5 @@
 const express = require( 'express' )
+const Producer = require( './models/Producer' )
 
 const routes = express.Router()
 
@@ -23,8 +24,9 @@ routes.get( '/producers', ( request, response ) => {
     response.json( [ dataTest.producer ] )
 } )
 
-routes.post( '/producers', ( request, response ) => {
-    const producer = request.body
+routes.post( '/producers', async ( request, response ) => {
+    const producer = await Producer.create(request.body)
+    console.log( producer )
     response.json( { ObjectId: producer.id } )
 } )
 
