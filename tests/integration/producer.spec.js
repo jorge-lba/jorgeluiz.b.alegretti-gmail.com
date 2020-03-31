@@ -59,10 +59,12 @@ describe( 'PRODUCER_UPDATE', () => {
         producer.name = 'João'
             
         const response = await request( app )
-            .put( `/produces/${1}` )
+            .put( `/producers/${1}` )
             .send( producer )
         
         const keyResponse = Object.keys( response.body )[0]
+
+        console.log( response.body)
     
         expect( keyResponse ).toBe( 'message' )
         expect( response.body[ keyResponse ] ).toBe( `O cadastro do produtor Jorge foi atualizado para João` )
