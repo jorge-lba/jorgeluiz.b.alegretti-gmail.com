@@ -37,4 +37,12 @@ routes.put( '/producers/:id', ( request, response ) => {
     response.json( { message: `O cadastro do produtor Jorge foi atualizado para ${ producer.name }` } )
 } )
 
+routes.delete( '/producers/:id', ( request, response ) => {
+    const producerId = request.params
+
+    console.log( producerId )
+
+    response.json( { message: `O produtor foi deletado` } )
+} )
+
 module.exports = routes
