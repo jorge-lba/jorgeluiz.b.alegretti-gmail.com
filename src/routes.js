@@ -28,4 +28,13 @@ routes.post( '/producers', ( request, response ) => {
     response.json( { ObjectId: producer.id } )
 } )
 
+routes.put( '/producers/:id', ( request, response ) => {
+    const producerId = request.params
+    const producer = request.body
+
+    console.log( producerId )
+
+    response.json( { message: `O cadastro do produtor Jorge foi atualizado para ${ producer.name }` } )
+} )
+
 module.exports = routes
