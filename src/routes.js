@@ -23,4 +23,9 @@ routes.get( '/producers', ( request, response ) => {
     response.json( [ dataTest.producer ] )
 } )
 
+routes.post( '/producers', ( request, response ) => {
+    const producer = request.body
+    response.json( { ObjectId: producer.id } )
+} )
+
 module.exports = routes
