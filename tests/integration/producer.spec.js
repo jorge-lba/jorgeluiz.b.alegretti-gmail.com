@@ -15,8 +15,41 @@ const dataTest = {
         },
         long: -23.5259355,
         lat: -47.4942263,
-    }
+    },
+
+    producer_mongoId: Object,
 }
+
+
+const keysProducerSent = Object.keys( dataTest.producer )
+const valuesProducerSent = Object.values( dataTest.producer )
+
+function testKeysProducer( producerKeysSent, producerResponse ){
+    const keysProducer = Object.keys( producerResponse )
+
+    producerKeysSent.forEach( ( producerKey, index ) => {
+        expect( producerKey ).toBe( keysProducer[ index ] )
+    } )
+}
+
+function testTypeValuesProducer( producerValuesSent, producerResponse ){
+    const valuesProducer = Object.values( producerResponse )
+
+    producerValuesSent.forEach( ( producerValue, index ) => {
+        expect( typeof producerValue ).toBe( typeof valuesProducer[ index ] )
+    } )
+}
+
+describe( 'PRODUCER_CREATE', () => {
+    it( 'Deve efetuar o cadastro de um produtor', async () => {
+        const response = await request( app )
+            .post( '/producers' )
+            .send( dataTest.producer )
+
+        expect( Object.keys(response.body) ).toBe( 'ObjectID' )
+        expect( typeof response.body ).toBe( 'object' )
+    } )
+} )
 
 describe( 'PRODUCERS', () => {
     it( 'Deve retornar os produtores cadastrados', async () => {
@@ -25,31 +58,12 @@ describe( 'PRODUCERS', () => {
 
         const producers = response.body
 
-        const keysProducerSent = Object.keys( dataTest.producer )
-        const valuesProducerSent = Object.values( dataTest.producer )
-
-        function testKeysProducer( producerKeysSent, producerResponse ){
-            const keysProducer = Object.keys( producerResponse )
-
-            producerKeysSent.forEach( ( producerKey, index ) => {
-                expect( producerKey ).toBe( keysProducer[ index ] )
-            } )
-        }
-
-        function testTypeValuesProducer( producerValuesSent, producerResponse ){
-            const valuesProducer = Object.values( producerResponse )
-
-            producerValuesSent.forEach( ( producerValue, index ) => {
-                expect( typeof producerValue ).toBe( typeof valuesProducer[ index ] )
-            } )
-        }
-
         if( producers.length > 0 ){
             producers.forEach( ( producer ) => {
                 testKeysProducer( keysProducerSent, producer )
                 testTypeValuesProducer( valuesProducerSent, producer )
             } )
 
-        }
+        } 
     } )
 } )
