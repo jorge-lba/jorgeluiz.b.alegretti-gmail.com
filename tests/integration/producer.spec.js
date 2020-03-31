@@ -1,9 +1,9 @@
-const supertest = require( 'supertest' )
+const request = require( 'supertest' )
 const app = require( '../../src/app' )
 
 const dataTest = {
     producer: {
-        id: {},
+        id: {hex:'AAFFBB'},
         name: 'Jorge',
         address: {
             street: 'Rua Rua Benedicto Wenceslau Mendes',
@@ -25,8 +25,8 @@ describe( 'PRODUCERS', () => {
 
         const producers = response.body
 
-        const keysProducerSent = Object.keys( data.producer )
-        const valuesProducerSent = Object.values( data.producer )
+        const keysProducerSent = Object.keys( dataTest.producer )
+        const valuesProducerSent = Object.values( dataTest.producer )
 
         function testKeysProducer( producerKeysSent, producerResponse ){
             const keysProducer = Object.keys( producerResponse )
@@ -36,21 +36,18 @@ describe( 'PRODUCERS', () => {
             } )
         }
 
-        function testValuesProducer( producerValuesSent, producerResponse ){
+        function testTypeValuesProducer( producerValuesSent, producerResponse ){
             const valuesProducer = Object.values( producerResponse )
 
             producerValuesSent.forEach( ( producerValue, index ) => {
-                expect( producerValue ).toBe( valuesProducer[ index ] )
+                expect( typeof producerValue ).toBe( typeof valuesProducer[ index ] )
             } )
         }
-        
-        expect( typeof producers ).toBe( 'array' )
 
         if( producers.length > 0 ){
-
             producers.forEach( ( producer ) => {
                 testKeysProducer( keysProducerSent, producer )
-                testValuesProducer( valuesProducerSent, producers )
+                testTypeValuesProducer( valuesProducerSent, producer )
             } )
 
         }
