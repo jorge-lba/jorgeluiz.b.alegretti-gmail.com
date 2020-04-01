@@ -4,7 +4,6 @@ const mongoose = require( '../../src/database/index' )
 
 const dataTest = {
     product: {
-        producerId: mongoose.Types.ObjectId(),
         producerLocation: {
             lat: 47.6918721,
             long: -22.7146204,
@@ -20,9 +19,9 @@ const dataTest = {
 describe( 'PRODUCT_ADD', () => {
     it( 'Deve adicionar um produto', async () => {
         const response = await request( app )
-            .post( '/product' )
-            .sent( 'authorization', dataTest.producerId )
-            .send( product )
+            .post( '/products' )
+            .set( 'authorization', dataTest.producerId )
+            .send( dataTest.product )
 
         console.log( response )
 

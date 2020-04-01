@@ -2,6 +2,8 @@ const request = require( 'supertest' )
 const app = require( '../../src/app' )
 const mongoose = require( '../../src/database/index' )
 
+jest.setTimeout( 40000 )
+
 const dataTest = {
     producer: {
         name: 'Jorge',

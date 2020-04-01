@@ -18,7 +18,18 @@ const dataTest = {
         },
         long: -23.5259355,
         lat: -47.4942263,
-    }
+    },
+    product: {
+        producerId: mongoose.Types.ObjectId(),
+        producerLocation: {
+            lat: 47.6918721,
+            long: -22.7146204,
+        },
+        name: 'Batata Asterix Lavada',
+        type: 'tubérculos',
+        amount: 500000,
+        valuePerGarm: 0.0019728,
+    },
 }
 
 routes.get( '/producers', async ( request, response ) => {
@@ -46,6 +57,22 @@ routes.delete( '/producers/:id', async ( request, response ) => {
     const producer = await Producer.findByIdAndRemove( producerId )
     
     response.json( { message: `O produtor ${ producer.name } foi deletado` } )
+} )
+
+routes.post( '/products', async ( request, response ) => {
+    const productRequest = request.body
+    const product = {
+        productId: mongoose.Types.ObjectId(),
+        ...productRequest
+    }
+    
+    if( request.headers.authorization ){
+        response.json( product )
+    }else{
+        response.json( {err:request.headers} )
+    }
+    
+
 } )
 
 module.exports = routes
