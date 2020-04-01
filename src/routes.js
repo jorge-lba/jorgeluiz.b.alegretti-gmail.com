@@ -96,4 +96,17 @@ routes.get( '/products/my', async ( request, response ) => {
     response.json( products )
 } )
 
+routes.put( '/products/:id', async ( request, response ) => {
+    const producerId = request.headers.authorization
+
+    if( producerId ){
+        const product = await Product.findOne( { _id: request.params.id } )
+        producerId === product.producerId
+            ? response.json( { message: 'Produto atualizado' } )
+            : response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+    }else{
+        response.json( { message: 'Pedido negado - ID do produto inválido' } )
+    }
+} )
+
 module.exports = routes
