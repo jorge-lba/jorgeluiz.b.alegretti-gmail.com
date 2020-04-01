@@ -63,10 +63,26 @@ routes.put( '/products/:id', async ( request, response ) => {
     const producerId = request.headers.authorization
 
     if( producerId ){
-        const product = await Product.findOne( { _id: request.params.id } )
+        const product = await Product.findById( request.params.id )
         producerId === product.producerId
             ? response.json( { message: 'Produto atualizado' } )
             : response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+    }else{
+        response.json( { message: 'Pedido negado - ID do produto inválido' } )
+    }
+} )
+
+routes.delete( '/products/:id', async ( request, response ) => {
+    const producerId = request.headers.authorization
+
+    if( producerId ){
+        const product = await Product.findById( request.params.id )
+        if(producerId === product.producerId){
+            await Product.findByIdAndRemove( product._id )
+            response.json( { message: 'Produto deletado' } )
+        }else{
+            response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+        }
     }else{
         response.json( { message: 'Pedido negado - ID do produto inválido' } )
     }
