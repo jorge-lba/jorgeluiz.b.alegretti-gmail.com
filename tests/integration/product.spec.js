@@ -13,7 +13,8 @@ const dataTest = {
         amount: 500000,
         valuePerGarm: 0.0019728,
     },
-    producerId: '5e8409fc4419a73addf5c84d'
+    producerId: '5e8409fc4419a73addf5c84d',
+    productId: String,
 }
 
 describe( 'PRODUCT_ADD', () => {
@@ -23,7 +24,27 @@ describe( 'PRODUCT_ADD', () => {
             .set( 'authorization', dataTest.producerId )
             .send( dataTest.product )
 
-        console.log( response.body )
+        expect( response.body ).toHaveProperty( 'message', 'Produto cadastrado' )
+        expect( response.body ).toHaveProperty( '_id' )
+
+
 
     } )
 } )
+
+describe( 'PRODUCT_LIST', () => {
+    it( 'Deve retornar uma lista com todos os produtos cadastrados', async () => {
+        const response = await request( app )
+            .get( '/products' )
+        
+        expect( typeof response.body ).toBe( 'array' )
+    } )
+} )
+
+describe( 'PRODUCT_UPDATE', () => {
+    it( 'Deve atualizar o cadastro do produto', async () => {
+        const response = await request( app )
+            .put( `/protucts/${}` )
+    } )
+} )
+
