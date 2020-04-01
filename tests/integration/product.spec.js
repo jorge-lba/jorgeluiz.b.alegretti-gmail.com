@@ -27,7 +27,7 @@ describe( 'PRODUCT_ADD', () => {
         expect( response.body ).toHaveProperty( 'message', 'Produto cadastrado' )
         expect( response.body ).toHaveProperty( '_id' )
 
-
+        dataTest.productId = response.body._id
 
     } )
 } )
@@ -41,10 +41,28 @@ describe( 'PRODUCT_LIST', () => {
     } )
 } )
 
-describe( 'PRODUCT_UPDATE', () => {
-    it( 'Deve atualizar o cadastro do produto', async () => {
+describe( 'PRODUCT_LIST_BY_PRODUCTOR', () => {
+    it( 'Deve retornar apenas a lista com os produtos casastrado pelo produtor', async () => {
         const response = await request( app )
-            .put( `/protucts/${}` )
+            .get( `/products/my` )
+            .set( 'authorization', dataTest.producerId )
+        
+        expect( typeof response.body ).toBe( 'array' )
     } )
 } )
+
+describe( 'PRODUCT_UPDATE', () => {
+    it( 'Deve atualizar o cadastro do produto', async () => {
+        const productUpdate = Object.assign( {}, dataTest.product )
+        productUpdate.amount = 30000
+
+        const response = await request( app )
+            .put( `/protucts/${ dataTest.productId }` )
+            .set( 'authorization', dataTest.producerId )
+            .send( productUpdate )
+
+        expect( response.body ).toHaveProperty( 'message', 'Produto atualizado' )
+    } )
+} )
+
 
