@@ -37,7 +37,7 @@ describe( 'PRODUCT_LIST', () => {
         const response = await request( app )
             .get( '/products' )
         
-        expect( typeof response.body ).toBe( 'array' )
+        expect( response.body instanceof Array ).toBe( true )
     } )
 } )
 
@@ -70,9 +70,10 @@ describe( 'PRODUCT_DELETE', () => {
         const response = await request( app )
             .delete( `/products/${ dataTest.productId }` )
             .set( 'authorization', dataTest.producerId )
+            
+        expect( response.body ).toHaveProperty( 'message', 'Produto deletado' )
     } )
 
-    expect( response.body ).toHaveProperty( 'message', 'Produto deletado' )
 } )
 
 
