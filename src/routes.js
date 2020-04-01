@@ -87,9 +87,13 @@ routes.post( '/products', async ( request, response ) => {
 } )
 
 routes.get( '/products', async ( request, response ) => {
-    const product = await Product.find()
-    
-    response.json( product )
+    const products = await Product.find()
+    response.json( products )
+} )
+
+routes.get( '/products/my', async ( request, response ) => {
+    const products = await Product.find( { producerId: request.headers.authorization } )
+    response.json( products )
 } )
 
 module.exports = routes
