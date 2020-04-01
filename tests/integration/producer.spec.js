@@ -1,9 +1,9 @@
 const request = require( 'supertest' )
 const app = require( '../../src/app' )
+const mongoose = require( '../../src/database/index' )
 
 const dataTest = {
     producer: {
-        id: {hex:'AAFFBB'},
         name: 'Jorge',
         address: {
             street: 'Rua Rua Benedicto Wenceslau Mendes',
@@ -17,7 +17,8 @@ const dataTest = {
         lat: -47.4942263,
     },
 
-    producer_mongoId: Object,
+    producerNewName: 'João',
+    objectID: String
 }
 
 
@@ -42,10 +43,15 @@ function testTypeValuesProducer( producerValuesSent, producerResponse ){
 
 describe( 'PRODUCER_CREATE', () => {
     it( 'Deve efetuar o cadastro de um produtor', async () => {
+        const producerSend = Object.assign( {}, dataTest.producer )
+        delete producerSend._id
+
         const response = await request( app )
             .post( '/producers' )
-            .send( dataTest.producer )
+            .send( producerSend )
         
+        dataTest.objectID = response.body.ObjectId
+
         const keysResponse = Object.keys(response.body)[0]
 
         expect( keysResponse ).toBe( 'ObjectId' )
@@ -54,18 +60,18 @@ describe( 'PRODUCER_CREATE', () => {
 } )
 
 describe( 'PRODUCER_UPDATE', () => {
-    it( 'O produtor deve ser deletado', async () =>{
+    it( 'O produtor deve ser atualizado', async () =>{
         const producer = Object.assign( {}, dataTest.producer)
-        producer.name = 'João'
-            
+        producer.name = dataTest.producerNewName
+
         const response = await request( app )
-            .put( `/producers/${1}` )
+            .put( `/producers/${dataTest.objectID}` )
             .send( producer )
-        
+                
         const keyResponse = Object.keys( response.body )[0]
     
         expect( keyResponse ).toBe( 'message' )
-        expect( response.body[ keyResponse ] ).toBe( `O cadastro do produtor Jorge foi atualizado para João` )
+        expect( response.body[ keyResponse ] ).toBe( `O cadastro do produtor ${dataTest.producer.name} foi atualizado para ${ producer.name }` )
     } )
 } )
 
@@ -75,11 +81,11 @@ describe( 'PRODUCERS', () => {
             .get('/producers')
 
         const producers = response.body
-
+        console.log(dataTest.objectID)
         if( producers.length > 0 ){
             producers.forEach( ( producer ) => {
-                testKeysProducer( keysProducerSent, producer )
-                testTypeValuesProducer( valuesProducerSent, producer )
+                testKeysProducer( ["_id",...keysProducerSent], producer )
+                testTypeValuesProducer( [ dataTest.objectID,...valuesProducerSent], producer )
             } )
 
         } 
@@ -88,14 +94,16 @@ describe( 'PRODUCERS', () => {
 
 
 describe( 'PRODUCER_DELETE', () => {
+    afterAll( async () => await mongoose.connection.close() )
+
     it( 'O produtor deve ser deletado', async () =>{
             
         const response = await request( app )
-            .delete( `/producers/${1}` )
+            .delete( `/producers/${dataTest.objectID}` )
         
         const keyResponse = Object.keys( response.body )[0]
 
         expect( keyResponse ).toBe( 'message' )
-        expect( response.body[ keyResponse ] ).toBe( `O produtor foi deletado` )
+        expect( response.body[ keyResponse ] ).toBe( `O produtor ${ dataTest.producerNewName } foi deletado` )
     } )
 } )

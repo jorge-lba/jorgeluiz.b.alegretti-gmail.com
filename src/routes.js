@@ -27,7 +27,7 @@ routes.get( '/producers', async ( request, response ) => {
 } )
 
 routes.post( '/producers', async ( request, response ) => {
-    const producer = await Producer.create({ userId: mongoose.Types.ObjectId().toHexString() ,...request.body})
+    const producer = await Producer.create( request.body )
     response.json( { ObjectId: producer.id } )
 } )
 
