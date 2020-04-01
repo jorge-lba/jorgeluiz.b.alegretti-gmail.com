@@ -61,12 +61,18 @@ routes.get( '/products/my', async ( request, response ) => {
 
 routes.put( '/products/:id', async ( request, response ) => {
     const producerId = request.headers.authorization
+    const productUpdate = request.body
 
     if( producerId ){
         const product = await Product.findById( request.params.id )
-        producerId === product.producerId
-            ? response.json( { message: 'Produto atualizado' } )
-            : response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+        if(producerId === product.producerId){
+            
+            await Product.findByIdAndUpdate( product._id, productUpdate )
+            response.json( { message: 'Produto atualizado' } )
+
+        }else{
+            response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+        }
     }else{
         response.json( { message: 'Pedido negado - ID do produto inválido' } )
     }
