@@ -69,16 +69,9 @@ routes.post( '/products', async ( request, response ) => {
     }
     
     if( requestId ){
-        if(requestId === dataTest.producerId ){
-            const product = await Product.create( productRequest )
-        
-            const idProduct = product._id
-            
-            response.json( { message: 'Produto cadastrado', _id: idProduct } )
-
-        }else{
-            response.json( { message: 'ID do produtor inválido' } )
-        }
+        const product = await Product.create( productRequest )
+        const idProduct = product._id
+        response.json( { message: 'Produto cadastrado', _id: idProduct } )
     }else{
         response.json( { message: 'Requer ID do produtor' } )
     }
