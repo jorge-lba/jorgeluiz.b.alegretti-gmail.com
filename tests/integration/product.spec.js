@@ -23,7 +23,7 @@ describe( 'PRODUCT_ADD', () => {
             .set( 'authorization', dataTest.producerId )
             .send( dataTest.product )
 
-        console.log( response )
+        console.log( response.body )
 
     } )
 } )
