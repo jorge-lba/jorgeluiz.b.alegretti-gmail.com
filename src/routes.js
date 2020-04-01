@@ -80,9 +80,9 @@ routes.put( '/products/:id', async ( request, response ) => {
 
 routes.delete( '/products/:id', async ( request, response ) => {
     const producerId = request.headers.authorization
+    const product = await Product.findById( request.params.id )
 
-    if( producerId ){
-        const product = await Product.findById( request.params.id )
+    if( request.params.id === product._id.toString() ){
         if(producerId === product.producerId){
             await Product.findByIdAndRemove( product._id )
             response.json( { message: 'Produto deletado' } )
