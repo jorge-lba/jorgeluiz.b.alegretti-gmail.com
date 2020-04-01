@@ -57,7 +57,7 @@ describe( 'PRODUCT_UPDATE', () => {
         productUpdate.amount = 30000
 
         const response = await request( app )
-            .put( `/protucts/${ dataTest.productId }` )
+            .put( `/products/${ dataTest.productId }` )
             .set( 'authorization', dataTest.producerId )
             .send( productUpdate )
 
