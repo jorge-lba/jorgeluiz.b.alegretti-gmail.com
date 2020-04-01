@@ -65,4 +65,14 @@ describe( 'PRODUCT_UPDATE', () => {
     } )
 } )
 
+describe( 'PRODUCT_DELETE', () => {
+    it( 'Deve deletar um produto', async () => {
+        const response = await request( app )
+            .delete( `/products/${ dataTest.productId }` )
+            .set( 'authorization', dataTest.producerId )
+    } )
+
+    expect( response.body ).toHaveProperty( 'message', 'Produto deletado' )
+} )
+
 
