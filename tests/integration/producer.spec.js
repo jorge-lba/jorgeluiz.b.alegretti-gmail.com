@@ -83,7 +83,7 @@ describe( 'PRODUCERS', () => {
             .get('/producers')
 
         const producers = response.body
-        console.log(dataTest.objectID)
+
         if( producers.length > 0 ){
             producers.forEach( ( producer ) => {
                 testKeysProducer( ["_id",...keysProducerSent], producer )
