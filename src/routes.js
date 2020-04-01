@@ -62,6 +62,7 @@ routes.delete( '/producers/:id', async ( request, response ) => {
 routes.post( '/products', async ( request, response ) => {
     const productRequest = request.body
     const product = {
+        producerId: request.headers.authorization,
         productId: mongoose.Types.ObjectId(),
         ...productRequest
     }
