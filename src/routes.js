@@ -1,4 +1,5 @@
 const express = require( 'express' )
+const mongoose = require( 'mongoose' )
 const Producer = require( './models/Producer' )
 
 const routes = express.Router()
@@ -20,23 +21,23 @@ const dataTest = {
     }
 }
 
-routes.get( '/producers', ( request, response ) => {
-    response.json( [ dataTest.producer ] )
+routes.get( '/producers', async ( request, response ) => {
+    const producers = await Producer.find()
+    response.json( producers )
 } )
 
 routes.post( '/producers', async ( request, response ) => {
-    const producer = await Producer.create(request.body)
-    console.log( producer )
+    const producer = await Producer.create({ userId: mongoose.Types.ObjectId().toHexString() ,...request.body})
     response.json( { ObjectId: producer.id } )
 } )
 
-routes.put( '/producers/:id', ( request, response ) => {
-    const producerId = request.params
-    const producer = request.body
+routes.put( '/producers/:id', async ( request, response ) => {
+    const producerId = request.params.id
+    const producerReq = request.body
 
-    console.log( producerId )
+    const producer = await Producer.findByIdAndUpdate( producerId, producerReq )
 
-    response.json( { message: `O cadastro do produtor Jorge foi atualizado para ${ producer.name }` } )
+    response.json( { message: `O cadastro do produtor ${producer.name} foi atualizado para ${ producerReq.name }` } )
 } )
 
 routes.delete( '/producers/:id', ( request, response ) => {
