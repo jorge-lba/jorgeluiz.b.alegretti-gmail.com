@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "src/server.js",
+    "startNodemon": "nodemon src/server.js",
     "test": "jest"
   },
-  "keywords": [],
+  "keywords": [
+    "example",
+    "heroku"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
