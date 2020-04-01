@@ -1,6 +1,7 @@
 const express = require( 'express' )
 const mongoose = require( 'mongoose' )
 const Producer = require( './models/Producer' )
+const Product = require( './models/Product' )
 
 const routes = express.Router()
 
@@ -30,6 +31,7 @@ const dataTest = {
         amount: 500000,
         valuePerGarm: 0.0019728,
     },
+    producerId: '5e8409fc4419a73addf5c84d',
 }
 
 routes.get( '/producers', async ( request, response ) => {
@@ -60,20 +62,34 @@ routes.delete( '/producers/:id', async ( request, response ) => {
 } )
 
 routes.post( '/products', async ( request, response ) => {
-    const productRequest = request.body
-    const product = {
-        producerId: request.headers.authorization,
-        productId: mongoose.Types.ObjectId(),
-        ...productRequest
+    const requestId = request.headers.authorization
+    const productRequest = { 
+        producerId: requestId,
+        ...request.body
     }
     
-    if( request.headers.authorization ){
-        response.json( product )
+    if( requestId ){
+        if(requestId === dataTest.producerId ){
+            const product = await Product.create( productRequest )
+        
+            const idProduct = product._id
+            
+            response.json( { message: 'Produto cadastrado', _id: idProduct } )
+
+        }else{
+            response.json( { message: 'ID do produtor inválido' } )
+        }
     }else{
-        response.json( {err:request.headers} )
+        response.json( { message: 'Requer ID do produtor' } )
     }
     
 
+} )
+
+routes.get( '/products', async ( request, response ) => {
+    const product = await Product.find()
+    
+    response.json( product )
 } )
 
 module.exports = routes

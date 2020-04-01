@@ -2,7 +2,7 @@ const mongoose = require( '../database/index' )
 
 const ProductSchema = new mongoose.Schema({
     producerId: String,
-    producerLocation: String,
+    producerLocation: Object,
     name: String,
     type: String,
     amount: Number,
