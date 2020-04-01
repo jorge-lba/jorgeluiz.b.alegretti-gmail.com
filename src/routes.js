@@ -40,12 +40,12 @@ routes.put( '/producers/:id', async ( request, response ) => {
     response.json( { message: `O cadastro do produtor ${producer.name} foi atualizado para ${ producerReq.name }` } )
 } )
 
-routes.delete( '/producers/:id', ( request, response ) => {
-    const producerId = request.params
+routes.delete( '/producers/:id', async ( request, response ) => {
+    const producerId = request.params.id
 
-    console.log( producerId )
-
-    response.json( { message: `O produtor foi deletado` } )
+    const producer = await Producer.findByIdAndRemove( producerId )
+    
+    response.json( { message: `O produtor ${ producer.name } foi deletado` } )
 } )
 
 module.exports = routes
