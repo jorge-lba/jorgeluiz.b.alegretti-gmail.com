@@ -1,38 +1,8 @@
 const express = require( 'express' )
-const mongoose = require( 'mongoose' )
 const Producer = require( './models/Producer' )
 const Product = require( './models/Product' )
 
 const routes = express.Router()
-
-const dataTest = {
-    producer: {
-        id: {hex:'AAFFBB'},
-        name: 'Jorge',
-        address: {
-            street: 'Rua Rua Benedicto Wenceslau Mendes',
-            number: 120,
-            neighborhood: 'Jardim Nova Manchester',
-            city: 'Sorocaba',
-            uf: 'SP',
-            cep: '18052000'
-        },
-        long: -23.5259355,
-        lat: -47.4942263,
-    },
-    product: {
-        producerId: mongoose.Types.ObjectId(),
-        producerLocation: {
-            lat: 47.6918721,
-            long: -22.7146204,
-        },
-        name: 'Batata Asterix Lavada',
-        type: 'tubérculos',
-        amount: 500000,
-        valuePerGarm: 0.0019728,
-    },
-    producerId: '5e8409fc4419a73addf5c84d',
-}
 
 routes.get( '/producers', async ( request, response ) => {
     const producers = await Producer.find()
