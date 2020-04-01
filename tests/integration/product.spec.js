@@ -47,7 +47,7 @@ describe( 'PRODUCT_LIST_BY_PRODUCTOR', () => {
             .get( `/products/my` )
             .set( 'authorization', dataTest.producerId )
         
-        expect( typeof response.body ).toBe( 'array' )
+        expect( response.body instanceof Array ).toBe( true )
     } )
 } )
 
