@@ -5,6 +5,11 @@ const ProductController = require( './controller/ProductController' )
 
 const routes = express.Router()
 
+routes.get( '/users', ProducerController.index )
+routes.post( '/users', ProducerController.create )
+routes.put( '/users/:id', ProducerController.update)
+routes.delete( '/users/:id', ProducerController.delete )
+
 routes.get( '/producers', ProducerController.index )
 routes.post( '/producers', ProducerController.create )
 routes.put( '/producers/:id', ProducerController.update)
