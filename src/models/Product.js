@@ -2,11 +2,12 @@ const mongoose = require( '../database/index' )
 
 const ProductSchema = new mongoose.Schema({
     producerId: String,
-    producerLocation: Object,
+    producerAddress: Object,
     name: String,
     type: String,
+    description: String,
     amount: Number,
-    valuePerGarm: Number,
+    valuePerKilo: Number,
 })
 
 const Product = mongoose.model( 'Product', ProductSchema )
