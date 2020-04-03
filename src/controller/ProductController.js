@@ -7,18 +7,18 @@ module.exports = {
         response.json( products )
     },
 
-    async indexByProducer ( request, response ) {
+    async indexByUser ( request, response ) {
         const products = await Product.find( { userId: request.headers.authorization } )
         response.json( products )
     },
 
     async create ( request, response ) {
         const requestId = request.headers.authorization
-        const producer = await User.findById( requestId )
+        const user = await User.findById( requestId )
 
         const productRequest = { 
             userId: requestId,
-            userAddress: producer.address,
+            userAddress: user.address,
             dateAdd: Date.now(),
             ...request.body
         }
@@ -36,10 +36,10 @@ module.exports = {
 
     async update ( request, response ) {
         const userId = request.headers.authorization
-        const producer = await User.findById( userId )
+        const user = await User.findById( userId )
 
         const productUpdate = request.body
-        productUpdate.address = producer.address
+        productUpdate.address = user.address
 
         if( userId ){
             const product = await Product.findById( request.params.id )
@@ -66,7 +66,7 @@ module.exports = {
         const product = await Product.findById( request.params.id )
     
         if( request.params.id === product._id.toString() ){
-            if(producerId === product.producerId){
+            if(userId === product.userId){
                 await Product.findByIdAndRemove( product._id )
                 response.json( { message: 'Produto deletado' } )
             }else{
