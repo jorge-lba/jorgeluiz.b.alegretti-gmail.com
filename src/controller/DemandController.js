@@ -26,9 +26,9 @@ module.exports = {
         if( requestId ){
             const demand = await Demand.create( demandRequest )
             const iddemand = demand._id
-            response.json( { message: 'Produto cadastrado', _id: iddemand } )
+            response.json( { message: 'Demanda cadastrado', _id: iddemand } )
         }else{
-            response.json( { message: 'Requer ID do produtor' } )
+            response.json( { message: 'Requer ID do usuário' } )
         }
         
     
@@ -46,18 +46,16 @@ module.exports = {
 
             demandUpdate.dateLast = Date.now() 
             
-            if( demandUpdate.dateHarvest === undefined ) demandUpdate.dateHarvest = Date.now()  
-            
             if(userId === demand.userId){
                 
                 await Demand.findByIdAndUpdate( demand._id, demandUpdate )
-                response.json( { message: 'Produto atualizado' } )
+                response.json( { message: 'Demanda atualizado' } )
     
             }else{
-                response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+                response.json( { message: 'Autorização negada - ID do usuário inválido' } )
             }
         }else{
-            response.json( { message: 'Pedido negado - ID do produto inválido' } )
+            response.json( { message: 'Pedido negado - ID do demanda inválido' } )
         }
     },
 
@@ -67,13 +65,13 @@ module.exports = {
     
         if( request.params.id === demand._id.toString() ){
             if(userId === demand.userId){
-                await demand.findByIdAndRemove( demand._id )
-                response.json( { message: 'Produto deletado' } )
+                await Demand.findByIdAndRemove( demand._id )
+                response.json( { message: 'Demanda deletado' } )
             }else{
-                response.json( { message: 'Autorização negada - ID do produtor inválido' } )
+                response.json( { message: 'Autorização negada - ID do usuário inválido' } )
             }
         }else{
-            response.json( { message: 'Pedido negado - ID do produto inválido' } )
+            response.json( { message: 'Pedido negado - ID do demanda inválido' } )
         }
     }, 
 }
