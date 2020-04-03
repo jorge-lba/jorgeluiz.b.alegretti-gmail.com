@@ -1,12 +1,15 @@
 const mongoose = require( '../database/index' )
 
 const ProductSchema = new mongoose.Schema({
-    producerId: String,
-    producerAddress: Object,
+    userId: String,
+    userAddress: Object,
     name: String,
     type: String,
     description: String,
     amount: Number,
+    dateAdd: { type: Date },
+    dateLast: { type: Date, default: Date.now },
+    dateHarvest: { type: Date, default: Date.now },
     valuePerKilo: Number,
 })
 
