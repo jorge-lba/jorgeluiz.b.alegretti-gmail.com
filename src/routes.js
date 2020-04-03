@@ -17,7 +17,7 @@ routes.put( '/producers/:id', ProducerController.update)
 routes.delete( '/producers/:id', ProducerController.delete )
 
 routes.get( '/products', ProductController.index )
-routes.get( '/products/my', ProductController.indexByProducer )
+routes.get( '/products/my', ProductController.indexByUser )
 routes.post( '/products', ProductController.create )
 routes.put( '/products/:id', ProductController.update )
 routes.delete( '/products/:id', ProductController.delete )
