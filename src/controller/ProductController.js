@@ -1,4 +1,5 @@
 const Product = require( '../models/Product' )
+const User = require( '../models/User' )
 
 module.exports = {
     async index ( request, response ) {
@@ -13,8 +14,11 @@ module.exports = {
 
     async create ( request, response ) {
         const requestId = request.headers.authorization
+        const producer = await User.findById( requestId )
+
         const productRequest = { 
             userId: requestId,
+            userAddress: producer.address,
             dateAdd: Date.now(),
             ...request.body
         }
@@ -32,8 +36,11 @@ module.exports = {
 
     async update ( request, response ) {
         const userId = request.headers.authorization
+        const producer = await User.findById( userId )
+
         const productUpdate = request.body
-    
+        productUpdate.address = producer.address
+
         if( userId ){
             const product = await Product.findById( request.params.id )
 
