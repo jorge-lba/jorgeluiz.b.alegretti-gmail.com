@@ -7,14 +7,15 @@ module.exports = {
     },
 
     async indexByProducer ( request, response ) {
-        const products = await Product.find( { producerId: request.headers.authorization } )
+        const products = await Product.find( { userId: request.headers.authorization } )
         response.json( products )
     },
 
     async create ( request, response ) {
         const requestId = request.headers.authorization
         const productRequest = { 
-            producerId: requestId,
+            userId: requestId,
+            dateAdd: Date.now(),
             ...request.body
         }
         
@@ -30,12 +31,17 @@ module.exports = {
     },
 
     async update ( request, response ) {
-        const producerId = request.headers.authorization
+        const userId = request.headers.authorization
         const productUpdate = request.body
     
-        if( producerId ){
+        if( userId ){
             const product = await Product.findById( request.params.id )
-            if(producerId === product.producerId){
+
+            productUpdate.dateLast = Date.now() 
+            
+            if( productUpdate.dateHarvest === undefined ) productUpdate.dateHarvest = Date.now()  
+            
+            if(userId === product.userId){
                 
                 await Product.findByIdAndUpdate( product._id, productUpdate )
                 response.json( { message: 'Produto atualizado' } )
@@ -49,7 +55,7 @@ module.exports = {
     },
 
     async delete ( request, response ) {
-        const producerId = request.headers.authorization
+        const userId = request.headers.authorization
         const product = await Product.findById( request.params.id )
     
         if( request.params.id === product._id.toString() ){
