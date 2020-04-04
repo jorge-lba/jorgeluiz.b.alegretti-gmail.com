@@ -7,29 +7,47 @@ module.exports = {
         response.json( products )
     },
 
-    async indexByUser ( request, response ) {
-        const products = await Product.find( { userId: request.headers.authorization } )
-        response.json( products )
-    },
+    // async indexByUser ( request, response ) {
+    //     const products = await Product.find( { userId: request.headers.authorization } )
+    //     response.json( products )
+    // },
 
     async create ( request, response ) {
-        const requestId = request.headers.authorization
-        const producer = await User.findById( requestId )
+        // const requestId = request.headers.authorization
+        // const producer = await User.findById( requestId )
 
-        const productRequest = { 
-            userId: requestId,
-            userAddress: producer.address,
-            dateAdd: Date.now(),
-            ...request.body
-        }
-        
-        if( requestId ){
-            const product = await Product.create( productRequest )
-            const idProduct = product._id
-            response.json( { message: 'Produto cadastrado', _id: idProduct } )
+        // const productRequest = { 
+        //     userId: requestId,
+        //     userAddress: producer.address,
+        //     dateAdd: Date.now(),
+        //     ...request.body
+        // }
+        const { email } = request.body
+        const [user] = await Product.find( { email:email } )
+        const product = request.body
+        console.log( user )
+
+        if(user) {
+
+            product.products.forEach( product => {
+                user.products.push( product )
+            } )
+
+            await Product.findOneAndUpdate( { email: email }, user )
+            
         }else{
-            response.json( { message: 'Requer ID do produtor' } )
+            await Product.create( product )
         }
+
+        response.json( { message: 'Produto cadastrado' } )
+
+        // if( requestId ){
+        //     const product = await Product.create( productRequest )
+        //     const idProduct = product._id
+        //     response.json( { message: 'Produto cadastrado', _id: idProduct } )
+        // }else{
+        //     response.json( { message: 'Requer ID do produtor' } )
+        // }
         
     
     },
