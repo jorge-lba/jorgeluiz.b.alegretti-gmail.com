@@ -2,22 +2,24 @@ const mongoose = require( '../database/index' )
 
 const RetailerSchema = new mongoose.Schema({
 
-    name:{
+    name: {
         type: String,
-        require: true,
-    },
-    address:{
-        type: Object,
-        require: true,
-    },
-    long: {
+        required: true,
+     },
+    cep: {
         type: Number,
         required: true,
-    },
-    lat: {
+     },
+    phone: {
         type: Number,
-        required: true
-    }
+        required: true,
+     },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+     },
+
 })
 
 const Retailer = mongoose.model( 'Retailer', RetailerSchema )

@@ -4,6 +4,7 @@ const ProducerController = require( './controller/ProducerController' )
 const ProductController = require( './controller/ProductController' )
 const DemandController = require( './controller/DemandController' )
 const UserController = require( './controller/UserController' )
+const RetailerController = require( './controller/RetailerController' )
 
 const routes = express.Router()
 
@@ -22,6 +23,9 @@ routes.get( '/products', ProductController.index )
 routes.post( '/products', ProductController.create )
 routes.put( '/products/:id', ProductController.update )
 routes.delete( '/products/:id', ProductController.delete )
+
+routes.get( '/retailers', RetailerController.index )
+routes.post( '/retailers', RetailerController.create )
 
 // routes.get( '/demands', DemandController.index )
 // routes.get( '/demands/my', DemandController.indexByUser )
