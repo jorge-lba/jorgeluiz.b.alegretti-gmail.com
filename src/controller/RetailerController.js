@@ -8,9 +8,9 @@ module.exports = {
             const token = request.header('Authorization')
             const retailer = await Retailer.find()
             const data = JWT.verify(token, process.env.JWT_KEY)
-            response.json( retailer )   
+            response.status(200).json( retailer )   
         } catch (error) {
-            response.json( { message: 'Erro de autenticação' } )
+            response.status(400).json( { message: 'Erro de autenticação' } )
         }
     },
 
@@ -33,11 +33,11 @@ module.exports = {
             
             const token = await Token.generate( JWTData ) 
 
-        response.json( {token} )
+        response.status(200).json( {token} )
         } catch (error) {
             error.errmsg
-                ? response.json( { error: error.errmsg } )
-                : response.json( { error: 'Erro ao efetuar o cadastro' } )
+                ? response.status(400).json( { error: error.errmsg } )
+                : response.status(400).json( { error: 'Erro ao efetuar o cadastro' } )
         } 
     
     },
