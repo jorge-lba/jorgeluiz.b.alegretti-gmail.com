@@ -30,23 +30,30 @@ module.exports = {
         //     dateAdd: Date.now(),
         //     ...request.body
         // }
-        const { email } = request.body
-        const [user] = await Product.find( { email:email } )
-        const product = request.body
-        
-        const userDb = await Product.create( product )
 
-        const userObject = userDb.toJSON()
-        
-        const JWTData = {
-            iss: 'api',
-            sub: userObject,
-            exp: Math.floor( Date.now() / 1000 ) + ((60*60)*3)
-        }
-        
-        const token = await Token.generate( JWTData ) 
+        try {
+            const { email } = request.body
+            const product = request.body
+            const userDb = await Product.create( product )
+            
+
+            const userObject = userDb.toJSON()
+            
+            const JWTData = {
+                iss: 'api',
+                sub: userObject,
+                exp: Math.floor( Date.now() / 1000 ) + ((60*60)*3)
+            }
+            
+            const token = await Token.generate( JWTData ) 
 
         response.send( token )
+        } catch (error) {
+            error.errmsg
+                ? response.json( { error: error.errmsg } )
+                : response.json( { error: 'Erro ao efetuar o cadastro' } )
+        }
+        
 
         // if( requestId ){
         //     const product = await Product.create( productRequest )
