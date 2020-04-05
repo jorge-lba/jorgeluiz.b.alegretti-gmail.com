@@ -19,6 +19,10 @@ const RetailerSchema = new mongoose.Schema({
         required: true,
         unique: true,
      },
+     place:{
+        type: String,
+        required: true
+    },
 
 })
 

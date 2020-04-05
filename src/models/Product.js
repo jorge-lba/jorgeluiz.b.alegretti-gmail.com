@@ -21,6 +21,10 @@ const ProductSchema = new mongoose.Schema({
         required: true,
         unique: true,
      },
+     place:{
+         type: String,
+         required: true
+     },
 
     //type: String,
     //description: String,

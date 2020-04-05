@@ -19,6 +19,10 @@ const TruckerSchema = new mongoose.Schema({
         required: true,
         unique: true,
      },
+     place:{
+        type: String,
+        required: true
+    },
     truckerModel: {
         type: String,
         required: true,
