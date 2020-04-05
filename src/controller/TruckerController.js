@@ -33,7 +33,7 @@ module.exports = {
             
             const token = await Token.generate( JWTData ) 
 
-        response.send( token )
+        response.json( {token} )
         } catch (error) {
             error.errmsg
                 ? response.json( { error: error.errmsg } )
