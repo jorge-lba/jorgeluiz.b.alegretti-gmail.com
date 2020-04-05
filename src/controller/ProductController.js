@@ -1,11 +1,18 @@
 const Product = require( '../models/Product' )
 const User = require( '../models/User' )
 const Token = require('../auth/toke.auth')
+const JWT = require( 'jsonwebtoken' )
 
 module.exports = {
     async index ( request, response ) {
-        const products = await Product.find()
-        response.json( products )
+        try {
+            const token = request.header('Authorization')
+            const products = await Product.find()
+            const data = JWT.verify(token, process.env.JWT_KEY)
+            response.json( products )   
+        } catch (error) {
+            response.json( { message: 'Erro de autenticação' } )
+        }
     },
 
     // async indexByUser ( request, response ) {
