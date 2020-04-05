@@ -1,5 +1,6 @@
 const Product = require( '../models/Product' )
 const User = require( '../models/User' )
+const Token = require('../auth/toke.auth')
 
 module.exports = {
     async index ( request, response ) {
@@ -25,21 +26,20 @@ module.exports = {
         const { email } = request.body
         const [user] = await Product.find( { email:email } )
         const product = request.body
-        console.log( user )
+        
+        const userDb = await Product.create( product )
 
-        if(user) {
-
-            product.products.forEach( product => {
-                user.products.push( product )
-            } )
-
-            await Product.findOneAndUpdate( { email: email }, user )
-            
-        }else{
-            await Product.create( product )
+        const userObject = userDb.toJSON()
+        
+        const JWTData = {
+            iss: 'api',
+            sub: userObject,
+            exp: Math.floor( Date,now() / 1000 ) + ((60*60)*3)
         }
+        
+        const token = await Token.generate( JWTData ) 
 
-        response.json( { message: 'Produto cadastrado' } )
+        response.send( token )
 
         // if( requestId ){
         //     const product = await Product.create( productRequest )
