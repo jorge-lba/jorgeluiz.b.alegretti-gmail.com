@@ -15,21 +15,31 @@ module.exports = {
         }
     },
 
-    // async indexByUser ( request, response ) {
-    //     const products = await Product.find( { userId: request.headers.authorization } )
-    //     response.json( products )
-    // },
+    async store ( request, response ) {
+        try {
+            const token = request.header('Authorization')
+            const tokenVerify = JWT.verify(token, process.env.JWT_KEY)
+            const product = request.query.type
+            const amount = request.query.amount
+            console.log( product, amount )
+            const products = await Product.find( { 
+                products: { 
+                    $elemMatch : { 
+                        name: { 
+                            $regex: new RegExp("^" + product.toLowerCase(), "i") 
+                        }, 
+                        amount: { $gte :  amount },
+                    },
+                } 
+            } )
+
+            response.status(200).json( products )
+        } catch (error) {
+            response.status(400).json( { message: 'Erro de autenticação', error } )
+        }
+    },
 
     async create ( request, response ) {
-        // const requestId = request.headers.authorization
-        // const producer = await User.findById( requestId )
-
-        // const productRequest = { 
-        //     userId: requestId,
-        //     userAddress: producer.address,
-        //     dateAdd: Date.now(),
-        //     ...request.body
-        // }
 
         try {
             const { email } = request.body
@@ -53,59 +63,6 @@ module.exports = {
                 ? response.status(400).json( { error: error.errmsg } )
                 : response.status(400).json( { error: 'Erro ao efetuar o cadastro' } )
         }
-        
 
-        // if( requestId ){
-        //     const product = await Product.create( productRequest )
-        //     const idProduct = product._id
-        //     response.json( { message: 'Produto cadastrado', _id: idProduct } )
-        // }else{
-        //     response.json( { message: 'Requer ID do produtor' } )
-        // }
-        
-    
     },
-
-    async update ( request, response ) {
-        const userId = request.headers.authorization
-        const producer = await User.findById( userId )
-
-        const productUpdate = request.body
-        productUpdate.address = producer.address
-
-        if( userId ){
-            const product = await Product.findById( request.params.id )
-
-            productUpdate.dateLast = Date.now() 
-            
-            if( productUpdate.dateHarvest === undefined ) productUpdate.dateHarvest = Date.now()  
-            
-            if(userId === product.userId){
-                
-                await Product.findByIdAndUpdate( product._id, productUpdate )
-                response.json( { message: 'Produto atualizado' } )
-    
-            }else{
-                response.json( { message: 'Autorização negada - ID do produtor inválido' } )
-            }
-        }else{
-            response.json( { message: 'Pedido negado - ID do produto inválido' } )
-        }
-    },
-
-    async delete ( request, response ) {
-        const userId = request.headers.authorization
-        const product = await Product.findById( request.params.id )
-    
-        if( request.params.id === product._id.toString() ){
-            if(userId === product.userId){
-                await Product.findByIdAndRemove( product._id )
-                response.json( { message: 'Produto deletado' } )
-            }else{
-                response.json( { message: 'Autorização negada - ID do produtor inválido' } )
-            }
-        }else{
-            response.json( { message: 'Pedido negado - ID do produto inválido' } )
-        }
-    }, 
 }
