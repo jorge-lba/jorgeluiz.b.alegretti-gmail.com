@@ -22,7 +22,6 @@ module.exports = {
             const tokenVerify = JWT.verify(token, process.env.JWT_KEY)
             const product = request.query.type
             const amount = request.query.amount
-            console.log( product, amount )
 
             const products = await Product.find( { 
                 products: { 

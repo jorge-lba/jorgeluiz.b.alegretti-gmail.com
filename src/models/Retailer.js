@@ -7,7 +7,7 @@ const RetailerSchema = new mongoose.Schema({
         required: true,
      },
     cep: {
-        type: Number,
+        type: String,
         required: true,
      },
     phone: {
